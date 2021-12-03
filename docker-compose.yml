@@ -1,0 +1,75 @@
+version: '3.4'
+
+services:
+  sqlserver:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+      user: root
+      container_name: sqlserver
+      ports:
+        - 1433:1433
+      environment:
+        ACCEPT_EULA: Y
+        SA_PASSWORD: PasswordO1.
+        MSSQL_PID: Express
+      volumes:
+        - "D:/Hexacta/DevOps/Learning - Entrnos/Entornos Ejemplo/volumes/sqlserver:/var/opt/mssql/data"
+
+  rabbitmq:
+    hostname: rabitmq
+    labels:
+      NAME: "rabbitmq"
+    build: 
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+    environment:
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=mqpass1234
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672 
+      - 15672:15672
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:15672"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    volumes:
+      - "D:/Hexacta/DevOps/Learning - Entrnos/Entornos Ejemplo/volumes/rabbitmq/lib:/var/lib/rabbitmq/"
+      - "D:/Hexacta/DevOps/Learning - Entrnos/Entornos Ejemplo/volumes/rabbitmq/log:/var/log/rabbitmq"
+
+  publisher:
+    build:
+      context: ./publisher
+      dockerfile: Dockerfile 
+    container_name: 'publisher'
+    restart: on-failure
+    ports:
+      - 8080:80
+    links: 
+      - rabbitmq
+    depends_on:
+      - "rabbitmq"
+
+  migrations:
+    container_name: 'migrations'
+    build: 
+      context: ./consumer
+      dockerfile: migration.dockerfile
+    links: 
+        - sqlserver
+    depends_on:
+      - "sqlserver"
+
+  consumer:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile 
+    container_name: 'consumer'
+    restart: on-failure
+    links: 
+        - rabbitmq
+    depends_on:
+      - "rabbitmq"
+      - "sqlserver"
+      - "migrations"
+      - "publisher"

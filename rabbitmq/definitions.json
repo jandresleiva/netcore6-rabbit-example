@@ -1,0 +1,24 @@
+{
+    "users": [
+        {
+            "name": "consumer",
+            "password": "consumer",
+            "tags": ""
+        },
+        {
+            "name": "rabbitmq",
+            "password": "rabbitmq",
+            "tags": "administrator"
+        }
+    ],
+    "vhosts": [
+        {"name":"/"}
+    ],
+    "permissions": [
+        {"user":"consumer","vhost":"/","configure":".*","write":".*","read":".*"},
+        {"user":"rabbitmq","vhost":"/","configure":".*","write":".*","read":".*"}
+    ],
+    "queues": [
+        {"name":"testQ","vhost":"/","durable":true,"auto_delete":false,"arguments":{}}
+    ]
+}
