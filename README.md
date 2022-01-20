@@ -10,13 +10,8 @@ You will need to have [Docker](https://docs.docker.com/engine/install/) and [Doc
 
 1. Clone the repo `git clone https://github.com/jandresleiva/netcore6-rabbit-example.git`
 2. Get into de folder and run docker-compose in detached mode
-3. Update the volumes location in the `docker-compose.yml` file on lines 15, 37, 38. And change it so it looks like this:
-```
-- "{CLONING_PATH}/volumes/sqlserver:/var/opt/mssql/data"
-- "{CLONING_PATH}/volumes/rabbitmq/lib:/var/lib/rabbitmq/"
-- "{CLONING_PATH}/volumes/rabbitmq/log:/var/log/rabbitmq"
-```
-Replacing {CLONING_PATH} for your own path.
+3. Update the volumes location in the `docker-compose.yml` file on lines 15, 37, 38. And change the `{CLONING_PATH}` placeholders for the actual absolute path to the folder where you did git clone.
+4. Run the docker-compose in detached mode.
 
 ```
 cd netcore6-rabbit-example
