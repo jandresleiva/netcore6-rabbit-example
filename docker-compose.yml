@@ -12,7 +12,7 @@ services:
         SA_PASSWORD: PasswordO1.
         MSSQL_PID: Express
       volumes:
-        - "D:/Hexacta/DevOps/Learning - Entrnos/Entornos Ejemplo/volumes/sqlserver:/var/opt/mssql/data"
+        - "{CLONING_PATH}/volumes/sqlserver:/var/opt/mssql/data"
 
   rabbitmq:
     hostname: rabitmq
@@ -34,8 +34,8 @@ services:
         timeout: 10s
         retries: 5
     volumes:
-      - "D:/Hexacta/DevOps/Learning - Entrnos/Entornos Ejemplo/volumes/rabbitmq/lib:/var/lib/rabbitmq/"
-      - "D:/Hexacta/DevOps/Learning - Entrnos/Entornos Ejemplo/volumes/rabbitmq/log:/var/log/rabbitmq"
+      - "{CLONING_PATH}/volumes/rabbitmq/lib:/var/lib/rabbitmq/"
+      - "{CLONING_PATH}/volumes/rabbitmq/log:/var/log/rabbitmq"
 
   publisher:
     build:
